@@ -1,0 +1,1 @@
+{"version":3,"file":"QueryCoursesModel.js","sourceRoot":"","sources":["../../src/models/QueryCoursesModel.ts"],"names":[],"mappings":"","sourcesContent":["export type GetCoursesQueryModel = {\r\n    /**\r\n     * this title should be included in Title of found courses\r\n     */\r\n    title: string \r\n    }"]}

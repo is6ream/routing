@@ -1,0 +1,1 @@
+{"version":3,"file":"URIParamsCourseIDModel.js","sourceRoot":"","sources":["../../src/models/URIParamsCourseIDModel.ts"],"names":[],"mappings":"","sourcesContent":["export type URIParamsCourseIDModel = {\r\n    /**\r\n     * id of existing course\r\n     */\r\n    id: string\r\n}"]}

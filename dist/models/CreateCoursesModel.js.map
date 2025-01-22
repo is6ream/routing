@@ -1,0 +1,1 @@
+{"version":3,"file":"CreateCoursesModel.js","sourceRoot":"","sources":["../../src/models/CreateCoursesModel.ts"],"names":[],"mappings":"","sourcesContent":["export type CourseCreateInputModel = {\r\n/**\r\n * Course title\r\n */\r\ntitle: string \r\n}"]}

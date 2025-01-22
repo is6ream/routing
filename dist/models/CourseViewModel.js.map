@@ -1,0 +1,1 @@
+{"version":3,"file":"CourseViewModel.js","sourceRoot":"","sources":["../../src/models/CourseViewModel.ts"],"names":[],"mappings":"","sourcesContent":["export type CourseViewModel = {\r\n    id: number,\r\n    title: string,\r\n    studentsCount: number\r\n}\r\n"]}
