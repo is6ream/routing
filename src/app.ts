@@ -9,7 +9,6 @@ import { title } from 'process';
 import { create } from 'domain';
 
 export const app = express()
-const port = 3000
 
 export const HTTP_STATUSES = {
     OK_200: 200,
@@ -119,8 +118,4 @@ app.put('/courses/:id', (req: RequestWithParamsAndBody<URIParamsCourseIDModel,
 app.delete('/__test/data', (req, res) => {
     db.courses = []
     res.sendStatus(HTTP_STATUSES.NO_CONTENT_204)
-})
-
-export const server = app.listen(port, () => {
-    console.log(`Example app listening on port ${port}`)
 })
