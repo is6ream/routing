@@ -3,6 +3,7 @@ import { app, HTTP_STATUSES } from '../../app';
 import { CourseCreateInputModel } from '../../models/CreateCoursesModel';
 import { UpdateCourseModel } from '../../models/UpdateCoursesModel';
 import { title } from 'process';
+import { log } from 'console';
 
 const getRequest = () => {
   return request(app);
@@ -37,10 +38,11 @@ describe('/courses', () => {
       .get('/courses')
       .expect(HTTP_STATUSES.OK_200, []);
   });
-
   let createdCourse1: any = null;
+
+
   it('should create course with correct input data', async () => {
-    const data: CourseCreateInputModel = { title: 'it-incubator backend'};
+    const data: CourseCreateInputModel = { title: 'it-incubator backend' };
 
     const createResponse = await request(app)
       .post('/courses')
@@ -97,6 +99,8 @@ describe('/courses', () => {
 
   it('should update course with correct input data', async () => {
     const data: UpdateCourseModel = { title: 'good new title' };
+    console.log(createdCourse1)
+    console.log(createdCourse2)
 
     await request(app)
       .put('/courses/' + createdCourse1.id)
@@ -109,10 +113,19 @@ describe('/courses', () => {
         ...createdCourse1,
         title: data.title
       });
+      const {body} = await request(app).get('/courses')
+      console.log(body, ' body')
+    console.log(createdCourse2, 'created course 2')
+    console.log(createdCourse1, ' creaTED cOURSE 1')
 
-    await request(app)
+    const updateResponse = await request(app)
       .get('/courses/' + createdCourse2.id)
-      .expect(HTTP_STATUSES.OK_200, createdCourse2);
+      .expect(HTTP_STATUSES.OK_200);
+
+
+      console.log(updateResponse.body, '22')
+        console.log((await request(app).get('/courses')).body, ' 33')
+      expect(updateResponse.body).toEqual(createdCourse2)
   });
 
   it('should delete both courses', async () => {
@@ -132,4 +145,6 @@ describe('/courses', () => {
       .get('/courses/' + createdCourse2.id)
       .expect(HTTP_STATUSES.NOT_FOUND_404);
   });
-  })
+})
+
+

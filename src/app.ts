@@ -7,6 +7,7 @@ import { CourseViewModel } from './models/CourseViewModel';
 import { URIParamsCourseIDModel } from './models/URIParamsCourseIDModel'
 import { title } from 'process';
 import { create } from 'domain';
+import { log } from 'console';
 
 export const app = express()
 
@@ -40,7 +41,8 @@ const db: { courses: CourseType[] } = {
 const getCourseViewModel = (dbCourse: CourseType): CourseViewModel => {
     return {
         id: dbCourse.id,
-        title: dbCourse.title
+        title: dbCourse.title,
+        studentsCount: dbCourse.studentsCount
     }
 }
 
@@ -76,7 +78,7 @@ app.post('/courses', (req: RequestWithBody<CourseCreateInputModel>, res: Respons
     const createdCourse: CourseType = {
         id: +(new Date()),
         title: req.body.title,
-        studentsCount: 10
+        studentsCount:  10
     };
 
     db.courses.push(createdCourse);
@@ -99,14 +101,16 @@ app.put('/courses/:id', (req: RequestWithParamsAndBody<URIParamsCourseIDModel,
         res.sendStatus(HTTP_STATUSES.BAD_REQUEST_400)
         return;
     }
-    const foundCourse = db.courses.find(c => c.id === +req.params.id)
-    if (!foundCourse) {
+    console.log(db.courses, ' db.courses before update')
+    const foundCourseId = db.courses.findIndex(c => c.id === +req.params.id)
+    console.log(foundCourseId, ' foundCourseId')
+    if (foundCourseId === -1) {
         res.sendStatus(HTTP_STATUSES.NOT_FOUND_404)
         return
     }
-
-    foundCourse.title = req.body.title
-
+    db.courses[foundCourseId].title = req.body.title
+    //foundCourse.title = req.body.title
+    console.log(db.courses, 'after update')
     res.sendStatus(HTTP_STATUSES.NO_CONTENT_204)
 })
 
