@@ -67,24 +67,22 @@ app.get('/courses/:id', (req: RequestWithParams<URIParamsCourseIDModel>,
     res.json(getCourseViewModel(foundCourse))
 })
 
-app.post('/courses', (req: RequestWithBody<CourseCreateInputModel>,
-    res: Response<CourseViewModel>) => {
+app.post('/courses', (req: RequestWithBody<CourseCreateInputModel>, res: Response<CourseViewModel>) => {
     if (!req.body.title) {
-        res.sendStatus(HTTP_STATUSES.BAD_REQUEST_400)
+        res.sendStatus(HTTP_STATUSES.BAD_REQUEST_400);
         return;
     }
+
     const createdCourse: CourseType = {
         id: +(new Date()),
         title: req.body.title,
-        studentsCount: 0
-    }
+        studentsCount: 10
+    };
 
-    db.courses.push(createdCourse)
+    db.courses.push(createdCourse);
 
-    res
-        .sendStatus(HTTP_STATUSES.CREATED_201)
-        .json(getCourseViewModel(createdCourse))
-})
+    res.status(HTTP_STATUSES.CREATED_201).json(getCourseViewModel(createdCourse));
+});
 
 
 app.delete('/courses/:id', (req: RequestWithParams<URIParamsCourseIDModel>,
@@ -115,7 +113,7 @@ app.put('/courses/:id', (req: RequestWithParamsAndBody<URIParamsCourseIDModel,
 //остановился на рассмотрении метода пут
 
 
-app.delete('/__test/data', (req, res) => {
+app.delete('/__test__/data', (req, res) => {
     db.courses = []
     res.sendStatus(HTTP_STATUSES.NO_CONTENT_204)
 })
