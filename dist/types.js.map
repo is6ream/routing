@@ -1,1 +1,13 @@
-{"version":3,"file":"types.js","sourceRoot":"","sources":["../src/types.ts"],"names":[],"mappings":"","sourcesContent":["import { Request } from \"express\";\r\n\r\nexport type RequestWithBody<T> = Request<{},{},T>\r\nexport type RequestWithQuery<T> = Request<{},{},{},T>\r\nexport type RequestWithParams<T> = Request<T>\r\nexport type RequestWithParamsAndBody <T,B> = Request<T,{},B>\r\n"]}
+{
+    "version": 3,
+    "file": "types.js",
+    "sourceRoot": "",
+    "sources": [
+        "../src/types.ts"
+    ],
+    "names": [],
+    "mappings": "",
+    "sourcesContent": [
+        "import { Request } from \"express\";\r\n\r\nexport type RequestWithBody<T> = Request<{},{},T>\r\nexport type RequestWithQuery<T> = Request<{},{},{},T>\r\nexport type RequestWithParams<T> = Request<T>\r\nexport type RequestWithParamsAndBody <T,B> = Request<T,{},B>\r\n"
+    ]
+}

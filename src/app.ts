@@ -8,6 +8,7 @@ import { URIParamsCourseIDModel } from './models/URIParamsCourseIDModel'
 import { title } from 'process';
 import { create } from 'domain';
 import { log } from 'console';
+import { addCourseRoutes } from './routes/routes';
 
 export const app = express()
 
@@ -28,96 +29,11 @@ type CourseType = {
     title: string,
     studentsCount: number
 }
-
-const db: { courses: CourseType[] } = {
-    courses: [
-        { id: 1, title: 'front-end', studentsCount: 10 },
-        { id: 2, title: 'back-end', studentsCount: 10 },
-        { id: 3, title: 'automation-qa', studentsCount: 10 },
-        { id: 4, title: 'devops', studentsCount: 10 },
-    ]
-}
-
-const getCourseViewModel = (dbCourse: CourseType): CourseViewModel => {
+ export const getCourseViewModel = (dbCourse: CourseType): CourseViewModel => {
     return {
         id: dbCourse.id,
         title: dbCourse.title,
         studentsCount: dbCourse.studentsCount
     }
 }
-
-app.get('/courses', (req: RequestWithQuery<GetCoursesQueryModel>,
-    res: Response<CourseViewModel[]>) => {
-    let foundCourses = db.courses
-
-    if (req.query.title) {
-        foundCourses = foundCourses
-            .filter(c => c.title.indexOf(req.query.title) > -1)
-    }
-    res.json(foundCourses.map(getCourseViewModel))
-})
-
-app.get('/courses/:id', (req: RequestWithParams<URIParamsCourseIDModel>,
-    res: Response<CourseViewModel>) => {
-    const foundCourse = db.courses.find(c => c.id = +req.params.id)
-
-    if (!foundCourse) {
-        res.sendStatus(HTTP_STATUSES.NOT_FOUND_404)
-        return;
-    }
-
-    res.json(getCourseViewModel(foundCourse))
-})
-
-app.post('/courses', (req: RequestWithBody<CourseCreateInputModel>, res: Response<CourseViewModel>) => {
-    if (!req.body.title) {
-        res.sendStatus(HTTP_STATUSES.BAD_REQUEST_400);
-        return;
-    }
-
-    const createdCourse: CourseType = {
-        id: +(new Date()),
-        title: req.body.title,
-        studentsCount:  10
-    };
-
-    db.courses.push(createdCourse);
-
-    res.status(HTTP_STATUSES.CREATED_201).json(getCourseViewModel(createdCourse));
-});
-
-
-app.delete('/courses/:id', (req: RequestWithParams<URIParamsCourseIDModel>,
-    res) => {
-    db.courses = db.courses.filter(c => c.id !== +req.params.id)
-
-    res.sendStatus(HTTP_STATUSES.NO_CONTENT_204)
-})
-
-app.put('/courses/:id', (req: RequestWithParamsAndBody<URIParamsCourseIDModel,
-    UpdateCourseModel>,
-    res) => {
-    if (!req.body.title) {
-        res.sendStatus(HTTP_STATUSES.BAD_REQUEST_400)
-        return;
-    }
-    console.log(db.courses, ' db.courses before update')
-    const foundCourseId = db.courses.findIndex(c => c.id === +req.params.id)
-    console.log(foundCourseId, ' foundCourseId')
-    if (foundCourseId === -1) {
-        res.sendStatus(HTTP_STATUSES.NOT_FOUND_404)
-        return
-    }
-    db.courses[foundCourseId].title = req.body.title
-    //foundCourse.title = req.body.title
-    console.log(db.courses, 'after update')
-    res.sendStatus(HTTP_STATUSES.NO_CONTENT_204)
-})
-
-//остановился на рассмотрении метода пут
-
-
-app.delete('/__test__/data', (req, res) => {
-    db.courses = []
-    res.sendStatus(HTTP_STATUSES.NO_CONTENT_204)
-})
+ addCourseRoutes(app)
